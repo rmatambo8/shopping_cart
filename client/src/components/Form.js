@@ -8,18 +8,24 @@ const Form = ({ editing, toggleForm, title, price, quantity, handleSubmit}) => {
 
   return (
     <form>
-      <div className="input-group">
-        <label for="product-name">Product Name</label>
-        {editing ? <input type="text" id="product-name" {...title} /> : <input type="text" id="product-name" name="product-name" />}
+      <div class="input-group">
+          <label for="product-name">Product Name</label>
+        {editing ?
+          <input id="product-name" {...title} /> :
+          <input type="text" id="product-name" name="product-name" />}
       </div>
       <div className="input-group">
         <label for="product-price">Price</label>
-        {editing ? <input type="text" id="product-price" {...price} /> : <input type="text" id="product-price" name="product-price" />}
+        {editing ?
+          <input id="product-price" {...price} /> :
+          <input type="text" id="product-price" name="product-price" />}
       </div>
 
       <div className="input-group">
         <label for="product-quantity">Quantity</label>
-        {editing ? <input type="text" id="product-quantity" {...quantity} /> : <input type="text" id="product-quantity" name="product-quantity" /> }
+        {editing ?
+          <input id="product-quantity" {...quantity} /> :
+          <input type="text" id="product-quantity" name="product-quantity" />}
       </div>
       <div className="actions form-actions">
         <a href="#" onClick={handleProductChange} className="button">{editing ? "Update" : "Add"}</a>

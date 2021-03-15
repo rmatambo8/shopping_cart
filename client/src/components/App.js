@@ -1,19 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from './Header';
 import Products from './Products';
 import useField from './useField';
 import data from "../lib/data";
-
-import Form from './Form'
+import AddForm from './AddForm';
+// import Form from './Form'
 
 const App = () => {
 	const [ cart, setCart ] = useState([]);
-	const [products, setProducts] = useState(data);
-	const [formState, setFormState] = useState(false);
+	const [products, setProducts] = useState([]);
 	const addItemToCart = (item) => {
 		setCart(cart.concat(item));
 	}
 
+	useEffect(() => {
+		setProducts(data)
+	}, [])
 	const removeItemFromCart = (id) => {
 		setCart(
 			cart.filter(item => {
@@ -27,11 +29,12 @@ const App = () => {
 	const title = useField(product.title);
   const price = useField(product.price);
 	const quantity = useField(product.quantity);
-	const handleForm = (event) => {
+	const addNewProduct = (event) => {
 		const item = { title: title.value, price: price.value, quantity: quantity.value }
 		setProducts(product.concat(item));
 	}
 
+	const props = { title, price, quantity, handleForm: addNewProduct }
 	return (
 		<div id="app">
 			<Header cart={cart}/>
@@ -41,14 +44,7 @@ const App = () => {
 					addItem={addItemToCart} 
 					removeItem={removeItemFromCart} 
 				/>
-			<div className="add-form">
-					<p><a onClick={() => setFormState(true)}className="button add-product-button">Add A Product</a></p>
-      	<h3>Add Product</h3>
-					{formState && <Form editing={false} toggleForm={(e) => {
-						e.preventDefault();
-						setFormState(!formState)
-					}} {...{ title, price, quantity, handleForm }} />}
-			</div>
+				<AddForm formProperties={props}/>
 			</main>
 		</div>
 	);

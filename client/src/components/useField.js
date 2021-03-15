@@ -1,14 +1,15 @@
 import { useState } from 'react';
 
-const useField = (name) => {
-    const [value, setValue] = useState(name)
+const useField = (text) => {
+    const [value, setValue] = useState(text)
 
   const onChange = (event) => {
     event.preventDefault();
     setValue(event.target.value);
   }
 
-  return {value, setValue, onChange};
+  const type = "text";
+  return { value, type, onChange };
 } 
 
 export default useField;
