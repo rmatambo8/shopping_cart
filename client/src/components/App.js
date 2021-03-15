@@ -9,7 +9,6 @@ import AddForm from './AddForm';
 const App = () => {
 	const [ cart, setCart ] = useState([]);
 	const [products, setProducts] = useState([]);
-	const [formState, setFormState] = useState(false);
 	const addItemToCart = (item) => {
 		setCart(cart.concat(item));
 	}

@@ -1,27 +1,37 @@
 import React, {useState} from 'react';
 import Form from './Form';
 
-import useField from './useField'
+import useField from './useField';
 
 const Product = ({ product, addItem, removeItem }) => {
-  const [editing, setEditing] = useState(false)
-  const [item, setItem] = useState(product)
+  const [editing, setEditing] = useState(false);
+  const [item, setItem] = useState(product);
 
   const titleEdit = useField(product.title);
   const priceEdit = useField(product.price);
-  const quantityEdit = useField(product.price);
-  
+  const quantityEdit = useField(product.quantity);
+
   const changeEditMode = (event) => {
-    event.preventDefault()
-    setEditing(!editing)
+    event.preventDefault();
+    setEditing(!editing);
   }
   const handleSubmit = (currentItem) => {
-    setItem(currentItem)
+    setItem(currentItem);
   }
 
   const renderForm = () => {
-    return (<Form editing={editing} title={titleEdit} price={priceEdit} quantity={quantityEdit} toggleForm={changeEditMode} handleSubmit={handleSubmit}/>)
-  } 
+    return (
+      <Form
+        editing={editing}
+        title={titleEdit}
+        price={priceEdit}
+        quantity={quantityEdit}
+        toggleForm={changeEditMode}
+        handleSubmit={handleSubmit}
+      />
+    )
+  }
+  
   const {id, price, quantity, title } = item;
   return (
     <div className="product" data-id={id}>
