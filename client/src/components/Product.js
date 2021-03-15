@@ -1,12 +1,12 @@
 import React from 'react';
 
-const Product = () => {
+const Product = ({ id, price, quantity, title, addItem, removeItem }) => {
   return (
-    <div className="product">
+    <div className="product" data-id={id}>
       <div className="product-details">
-        <h3>Amazon Kindle E-reader</h3>
-        <p className="price">$79.99</p>
-        <p className="quantity">5 left in stock</p>
+        <h3>{title}</h3>
+        <p className="price">{price}</p>
+        <p className="quantity">{quantity} left in stock</p>
         <div className="actions product-actions">
           <a className="button add-to-cart">Add to Cart</a>
           <a className="button edit">Edit</a>
