@@ -6,9 +6,11 @@ import useField from './useField'
 const Product = ({ product, addItem, removeItem }) => {
   const [editing, setEditing] = useState(false)
   const [item, setItem] = useState(product)
+
   const titleEdit = useField(product.title);
   const priceEdit = useField(product.price);
   const quantityEdit = useField(product.price);
+  
   const changeEditMode = (event) => {
     event.preventDefault()
     setEditing(!editing)
@@ -29,7 +31,7 @@ const Product = ({ product, addItem, removeItem }) => {
         <p className="quantity">{quantity} left in stock</p>
         <div className="actions product-actions">
           <a className="button add-to-cart">Add to Cart</a>
-          <a onClick={changeEditMode} className="button edit">{editing ? "Cancel" : "Edit"}</a>
+          {!editing ? <a onClick={changeEditMode} className="button edit">Edit</a> : null}
         </div>
         {editing && renderForm()}
         <a className="delete-button"><span>X</span></a>
