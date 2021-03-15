@@ -8,7 +8,7 @@ const useField = (name) => {
     setValue(event.target.value);
   }
 
-  return {value, setValue, onChange}
+  return {value, setValue, onChange};
 } 
 
-export default useField
+export default useField;
