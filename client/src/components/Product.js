@@ -21,7 +21,7 @@ const Product = ({ product, addItem, removeItem }) => {
 
   const renderForm = () => {
     return (
-      <Form
+      <Form 
         editing={editing}
         title={titleEdit}
         price={priceEdit}
@@ -30,9 +30,10 @@ const Product = ({ product, addItem, removeItem }) => {
         handleSubmit={handleSubmit}
       />
     )
-  }
-  
+  } 
+
   const {id, price, quantity, title } = item;
+
   return (
     <div className="product" data-id={id}>
       <div className="product-details">
