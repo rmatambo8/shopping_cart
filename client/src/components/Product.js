@@ -15,20 +15,24 @@ const Product = ({ product, addItem, removeItem }) => {
     event.preventDefault()
     setEditing(!editing)
   }
+
   const handleSubmit = (currentItem) => {
     setItem(currentItem)
   }
 
   const renderForm = () => {
     return (
-      <Form 
-        editing={editing}
-        title={titleEdit}
-        price={priceEdit}
-        quantity={quantityEdit}
-        toggleForm={changeEditMode}
-        handleSubmit={handleSubmit}
-      />)
+      <div className="edit-form">
+        <Form 
+          editing={editing}
+          title={titleEdit}
+          price={priceEdit}
+          quantity={quantityEdit}
+          toggleForm={changeEditMode}
+          handleSubmit={handleSubmit}
+        />
+      </div>
+    )
   } 
 
   const {id, price, quantity, title } = item;
@@ -40,8 +44,8 @@ const Product = ({ product, addItem, removeItem }) => {
         <p className="price">{price}</p>
         <p className="quantity">{quantity} left in stock</p>
         <div className="actions product-actions">
-          <a className="button add-to-cart">Add to Cart</a>
-          <a onClick={changeEditMode} className="button edit">{editing ? "Cancel" : "Edit"}</a>
+          {editing || <a className="button add-to-cart">Add to Cart</a>}
+          {editing || <a onClick={changeEditMode} className="button edit">Edit</a>}
         </div>
         {editing && renderForm()}
         <a className="delete-button"><span>X</span></a>
