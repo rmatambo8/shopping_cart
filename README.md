@@ -1,5 +1,10 @@
 # Shopping Cart App
-
+ instead of yarn use npm install
+  1. cd client
+  2. npm install
+  3. cd ../server
+  4. npm install
+  5. npm run dev (from server)
 ## Setup
 1. Install [Node.js](https://nodejs.org/en/download/package-manager/) if you haven't already
 1. Install [yarn](https://yarnpkg.com/en/docs/install#mac-stable)
