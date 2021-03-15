@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import Header from './Header';
 import Products from './Products';
-import AddProductForm from './AddProductForm';
+import useField from './useField';
 import data from "../lib/data";
+
+import Form from './Form'
 
 const App = () => {
 	const [ cart, setCart ] = useState([]);
-
+	const [products, setProducts] = useState(data);
+	const [formState, setFormState] = useState(false);
 	const addItemToCart = (item) => {
 		setCart(cart.concat(item));
 	}
@@ -19,16 +22,33 @@ const App = () => {
 	  );
 	}
 
+	const product = {title: "", price: "", quantity: ""}
+
+	const title = useField(product.title);
+  const price = useField(product.price);
+	const quantity = useField(product.quantity);
+	const handleForm = (event) => {
+		const item = { title: title.value, price: price.value, quantity: quantity.value }
+		setProducts(product.concat(item));
+	}
+
 	return (
 		<div id="app">
 			<Header cart={cart}/>
 			<main> 
 				<Products 
-					productList={data} 
+					productList={products} 
 					addItem={addItemToCart} 
 					removeItem={removeItemFromCart} 
-			  />
-				<AddProductForm />
+				/>
+			<div className="add-form">
+					<p><a onClick={() => setFormState(true)}className="button add-product-button">Add A Product</a></p>
+      	<h3>Add Product</h3>
+					{formState && <Form editing={false} toggleForm={(e) => {
+						e.preventDefault();
+						setFormState(!formState)
+					}} {...{ title, price, quantity, handleForm }} />}
+			</div>
 			</main>
 		</div>
 	);

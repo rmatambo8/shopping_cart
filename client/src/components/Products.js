@@ -6,7 +6,8 @@ const Products = ({ productList, addItem, removeItem }) => {
     <div className="product-listing">
       <h2>Products</h2>
       {productList.map(product => {
-        return <Product key={product.id} {...product} addItem={addItem} removeItem={removeItem} />
+        console.log(product)
+        return <Product key={product.id} product={product} addItem={addItem} removeItem={removeItem} />
       })}
     </div>
   )
