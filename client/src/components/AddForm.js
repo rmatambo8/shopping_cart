@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
 import Form from './Form';
 const AddForm = ({ formProperties }) => {
-  const [formState, setFormState] = useState(false)
+  const [displayAddForm, setDisplayAddForm] = useState(false);
   const toggleForm = (e) => {
     e.preventDefault();
-    setFormState(!formState)
+    setDisplayAddForm(!displayAddForm);
   }
-  const renderForm = () => {
-    if (!formState) return <div></div>
 
-    return (
-      <Form editing={false} toggleForm={toggleForm} {...formProperties} />
-    )
-  }
   return (
-      <div className="add-form">
-					<p onClick={toggleForm} ><a href="#" onClick={toggleForm} className="button add-product-button">Add A Product</a></p>
-      	<h3>Add Product</h3>
-          {renderForm()}
+      <div className={ !displayAddForm ? "add-form" : "add-form visible"}>
+        {displayAddForm === false ?
+          <React.Fragment>
+					  <p>
+              <a href="#" onClick={toggleForm} className="button add-product-button">Add A Product</a>
+            </p>
+          <h3>Add Product</h3>
+          </React.Fragment>
+        :
+        <Form editing={false} toggleForm={toggleForm} {...formProperties} />
+        }
 			</div>
   );
 }
- 
+
 export default AddForm;

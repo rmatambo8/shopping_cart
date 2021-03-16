@@ -23,7 +23,7 @@ const Product = ({ product, addItem, removeItem, removeProduct }) => {
   const renderForm = () => {
     return (
       <div className="edit-form">
-        <Form 
+        <Form
           editing={editing}
           title={titleEdit}
           price={priceEdit}
@@ -33,7 +33,7 @@ const Product = ({ product, addItem, removeItem, removeProduct }) => {
         />
       </div>
     )
-  } 
+  }
 
   const {id, price, quantity, title } = item;
 
@@ -44,7 +44,7 @@ const Product = ({ product, addItem, removeItem, removeProduct }) => {
         <p className="price">{price}</p>
         <p className="quantity">{quantity} left in stock</p>
         <div className="actions product-actions">
-          {editing || <a className="button add-to-cart">Add to Cart</a>}
+          {editing || <a className={quantity > 0 ? "button add-to-cart" : "button add-to-cart disabled"} onClick={() => addItem(item)}>Add to Cart</a>}
           {editing || <a onClick={changeEditMode} className="button edit">Edit</a>}
         </div>
         {editing && renderForm()}
