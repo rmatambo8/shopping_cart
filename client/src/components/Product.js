@@ -3,7 +3,7 @@ import Form from './Form';
 
 import useField from './useField';
 
-const Product = ({ product, addItem, removeItem }) => {
+const Product = ({ product, addItem, removeItem, removeProduct }) => {
   const [editing, setEditing] = useState(false);
   const [item, setItem] = useState(product);
 
@@ -48,7 +48,7 @@ const Product = ({ product, addItem, removeItem }) => {
           {editing || <a onClick={changeEditMode} className="button edit">Edit</a>}
         </div>
         {editing && renderForm()}
-        <a className="delete-button"><span>X</span></a>
+        <a className="delete-button" onClick={() => removeProduct(id)}><span>X</span></a>
       </div>
     </div>
   )
