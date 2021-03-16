@@ -1,16 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from './Header';
 import Products from './Products';
-import AddProductForm from './AddProductForm';
+import useField from './useField';
 import data from "../lib/data";
+import AddForm from './AddForm';
+// import Form from './Form'
 
 const App = () => {
 	const [ cart, setCart ] = useState([]);
-
+	const [products, setProducts] = useState([]);
 	const addItemToCart = (item) => {
 		setCart(cart.concat(item));
 	}
 
+	useEffect(() => {
+		setProducts(data)
+	}, [])
 	const removeItemFromCart = (id) => {
 		setCart(
 			cart.filter(item => {
@@ -19,16 +24,27 @@ const App = () => {
 	  );
 	}
 
+	const product = {title: "", price: "", quantity: ""}
+
+	const title = useField(product.title);
+  const price = useField(product.price);
+	const quantity = useField(product.quantity);
+	const addNewProduct = (event) => {
+		const item = { title: title.value, price: price.value, quantity: quantity.value }
+		setProducts(product.concat(item));
+	}
+
+	const props = { title, price, quantity, handleForm: addNewProduct }
 	return (
 		<div id="app">
 			<Header cart={cart}/>
 			<main> 
 				<Products 
-					productList={data} 
+					productList={products} 
 					addItem={addItemToCart} 
 					removeItem={removeItemFromCart} 
-			  />
-				<AddProductForm />
+				/>
+				<AddForm formProperties={props}/>
 			</main>
 		</div>
 	);

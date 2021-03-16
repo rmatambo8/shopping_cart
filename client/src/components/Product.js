@@ -1,6 +1,42 @@
-import React from 'react';
+import React, {useState} from 'react';
+import Form from './Form';
 
-const Product = ({ id, price, quantity, title, addItem, removeItem }) => {
+import useField from './useField';
+
+const Product = ({ product, addItem, removeItem }) => {
+  const [editing, setEditing] = useState(false);
+  const [item, setItem] = useState(product);
+
+  const titleEdit = useField(product.title);
+  const priceEdit = useField(product.price);
+  const quantityEdit = useField(product.quantity);
+
+  const changeEditMode = (event) => {
+    event.preventDefault();
+    setEditing(!editing);
+  }
+
+  const handleSubmit = (currentItem) => {
+    setItem(currentItem);
+  }
+
+  const renderForm = () => {
+    return (
+      <div className="edit-form">
+        <Form 
+          editing={editing}
+          title={titleEdit}
+          price={priceEdit}
+          quantity={quantityEdit}
+          toggleForm={changeEditMode}
+          handleSubmit={handleSubmit}
+        />
+      </div>
+    )
+  } 
+
+  const {id, price, quantity, title } = item;
+
   return (
     <div className="product" data-id={id}>
       <div className="product-details">
@@ -8,9 +44,10 @@ const Product = ({ id, price, quantity, title, addItem, removeItem }) => {
         <p className="price">{price}</p>
         <p className="quantity">{quantity} left in stock</p>
         <div className="actions product-actions">
-          <a className="button add-to-cart">Add to Cart</a>
-          <a className="button edit">Edit</a>
+          {editing || <a className="button add-to-cart">Add to Cart</a>}
+          {editing || <a onClick={changeEditMode} className="button edit">Edit</a>}
         </div>
+        {editing && renderForm()}
         <a className="delete-button"><span>X</span></a>
       </div>
     </div>
