@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Header from './Header';
 import Products from './Products';
 import useField from './useField';
@@ -30,7 +31,9 @@ const App = () => {
 	}
 
 	useEffect(() => {
-		setProducts(data);
+		axios.get('/api/products')
+			.then(({data}) => data)
+			.then((products) => setProducts(products));
 	}, [])
 
 	const removeItemFromCart = (id) => {
@@ -56,7 +59,12 @@ const App = () => {
 	const quantity = useField(product.quantity);
 	const addNewProduct = (_event) => {
 		const item = { title: title.value, price: price.value, quantity: quantity.value }
-		setProducts(products.concat(item));
+		axios.post("/api/products", item)
+			.then(({data}) => {
+				return data
+			}).then((product) => {
+				setProducts(products.concat(product));
+			});
 	}
 
 	const props = { title, price, quantity, handleSubmit: addNewProduct }
