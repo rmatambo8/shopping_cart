@@ -10,7 +10,23 @@ const App = () => {
 	const [ cart, setCart ] = useState([]);
 	const [products, setProducts] = useState([]);
 	const addItemToCart = (item) => {
-		setCart(cart.concat(item));
+		if (item.quantity === 0) {
+			alert("This item is out of stock!!")
+			return;
+		}
+		item.quantity--;
+		item = {...item};
+		let index = cart.findIndex(({id}) => id === item.id);
+		let newCart = cart.slice();
+
+		if (index > -1) {
+			newCart[index].quantity++;
+		} else {
+			item.quantity = 1;
+			newCart.push(item);
+		}
+
+		setCart(newCart);
 	}
 
 	useEffect(() => {
@@ -24,7 +40,7 @@ const App = () => {
 			})
 	  );
 	}
-
+	// TODO: when item is deleted remove item from cart too
   const removeProduct = (id) => {
 		setProducts(
 			products.filter(product => {
@@ -38,20 +54,20 @@ const App = () => {
 	const title = useField(product.title);
   const price = useField(product.price);
 	const quantity = useField(product.quantity);
-	const addNewProduct = (event) => {
+	const addNewProduct = (_event) => {
 		const item = { title: title.value, price: price.value, quantity: quantity.value }
-		setProducts(product.concat(item));
+		setProducts(products.concat(item));
 	}
 
 	const props = { title, price, quantity, handleSubmit: addNewProduct }
 	return (
 		<div id="app">
 			<Header cart={cart}/>
-			<main> 
-				<Products 
-					productList={products} 
-					addItem={addItemToCart} 
-					removeItem={removeItemFromCart} 
+			<main>
+				<Products
+					productList={products}
+					addItem={addItemToCart}
+					removeItem={removeItemFromCart}
           removeProduct={removeProduct}
 				/>
 				<AddForm formProperties={props}/>
@@ -65,8 +81,8 @@ export default App;
 /*
 CART:
 Header section: page title, cart, total, checkout (button)
-Products section: 
-	- individual products(product name, price, quantity in stock, add to cart button, edit button, "X" button), 
+Products section:
+	- individual products(product name, price, quantity in stock, add to cart button, edit button, "X" button),
 	- add product button
 
 */

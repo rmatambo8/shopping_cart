@@ -7,25 +7,25 @@ const Form = ({ editing, toggleForm, title, price, quantity, handleSubmit}) => {
   }
 
   return (
-    <form>
+    <form className="visible">
       <div className="input-group">
           <label htmlFor="product-name">Product Name</label>
         {editing ?
-          <input id="product-name" {...title} /> :
-          <input type="text" id="product-name" name="product-name" />}
+          <input id="product-name" {...title} onChange={title.onChange} /> :
+          <input type="text" id="product-name" onChange={title.onChange} name="product-name" />}
       </div>
       <div className="input-group">
         <label htmlFor="product-price">Price</label>
         {editing ?
-          <input id="product-price" {...price} /> :
-          <input type="text" id="product-price" name="product-price" />}
+          <input id="product-price" {...price} onChange={price.onChange}/> :
+          <input type="text" id="product-price" name="product-price" onChange={price.onChange} />}
       </div>
 
       <div className="input-group">
         <label htmlFor="product-quantity">Quantity</label>
         {editing ?
-          <input id="product-quantity" {...quantity} /> :
-          <input type="text" id="product-quantity" name="product-quantity" />}
+          <input id="product-quantity" {...quantity} onChange={quantity.onChange} /> :
+          <input type="text" id="product-quantity" name="product-quantity" onChange={quantity.onChange} />}
       </div>
       <div className="actions form-actions">
         <a href="#" onClick={handleProductChange} className="button">{editing ? "Update" : "Add"}</a>
