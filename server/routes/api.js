@@ -65,7 +65,7 @@ router.post("/cart", (req, res) => {
   Product.findByIdAndUpdate(
     productId,
     {
-      quantity: product.quantity,
+      quantity: product.quantity-1,
     },
     { new: true }
   ).then((updatedProduct) => {
