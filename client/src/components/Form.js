@@ -8,21 +8,21 @@ const Form = ({ editing, toggleForm, title, price, quantity, handleSubmit}) => {
 
   return (
     <form>
-      <div class="input-group">
-          <label for="product-name">Product Name</label>
+      <div className="input-group">
+          <label htmlFor="product-name">Product Name</label>
         {editing ?
           <input id="product-name" {...title} /> :
           <input type="text" id="product-name" name="product-name" />}
       </div>
       <div className="input-group">
-        <label for="product-price">Price</label>
+        <label htmlFor="product-price">Price</label>
         {editing ?
           <input id="product-price" {...price} /> :
           <input type="text" id="product-price" name="product-price" />}
       </div>
 
       <div className="input-group">
-        <label for="product-quantity">Quantity</label>
+        <label htmlFor="product-quantity">Quantity</label>
         {editing ?
           <input id="product-quantity" {...quantity} /> :
           <input type="text" id="product-quantity" name="product-quantity" />}

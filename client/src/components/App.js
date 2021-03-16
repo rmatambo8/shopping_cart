@@ -43,7 +43,7 @@ const App = () => {
 		setProducts(product.concat(item));
 	}
 
-	const props = { title, price, quantity, handleForm: addNewProduct }
+	const props = { title, price, quantity, handleSubmit: addNewProduct }
 	return (
 		<div id="app">
 			<Header cart={cart}/>
