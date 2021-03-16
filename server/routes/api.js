@@ -34,7 +34,7 @@ router.put("/products/:id", (req, res) => {
     .then((updatedProduct) => {
       req.body.product = updatedProduct;
       return CartItem.findOneAndUpdate(
-        { productId: updatedProduct._id },
+        { productId: updatedProduct.id },
         {
           title: updatedProduct.title,
           price: updatedProduct.price,
@@ -82,7 +82,7 @@ router.post("/cart", (req, res) => {
           });
         } else {
           return CartItem.findOneAndUpdate(
-            { productId: updatedProduct._id },
+            { productId: updatedProduct.id },
             {
               quantity: item.quantity + 1,
             },

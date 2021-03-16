@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import Form from './Form';
+import axios from 'axios';
 
 import useField from './useField';
 
-const Product = ({ product, addItem, removeItem, removeProduct }) => {
+const Product = ({ product, addItem, removeItem, removeProduct, onProductChange }) => {
   const [editing, setEditing] = useState(false);
   const [item, setItem] = useState(product);
 
@@ -17,7 +18,7 @@ const Product = ({ product, addItem, removeItem, removeProduct }) => {
   }
 
   const handleSubmit = (currentItem) => {
-    setItem(currentItem);
+    onProductChange({...currentItem, id: product.id })
   }
 
   const renderForm = () => {

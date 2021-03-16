@@ -10,31 +10,66 @@ import AddForm from './AddForm';
 const App = () => {
 	const [ cart, setCart ] = useState([]);
 	const [products, setProducts] = useState([]);
+
 	const addItemToCart = (item) => {
-		if (item.quantity === 0) {
-			alert("This item is out of stock!!")
-			return;
-		}
-		item.quantity--;
-		item = {...item};
-		let index = cart.findIndex(({id}) => id === item.id);
-		let newCart = cart.slice();
+		axios.post('/api/cart', {productId: item.id, product: {...item}})
+		.then(res => {
+			axios.get('/api/cart')
+			.then(({data}) => data)
+			.then(cart => setCart(cart));
+		});
+	};
+	// const addItemHelper = (item) => {
+	// 	if (item.quantity === 0) {
+	// 		alert("This item is out of stock!!")
+	// 		return;
+	// 	}
+	// 	item.quantity--;
+	// 	item = {...item};
+	// 	let index = cart.findIndex(({id}) => id === item.id);
+	// 	let newCart = cart.slice();
 
-		if (index > -1) {
-			newCart[index].quantity++;
-		} else {
-			item.quantity = 1;
-			newCart.push(item);
-		}
+	// 	if (index > -1) {
+	// 		newCart[index].quantity++;
+	// 	} else {
+	// 		item.quantity = 1;
+	// 		newCart.push(item);
+	// 	}
 
-		setCart(newCart);
+	// 	setCart(newCart);
+	// }
+
+	const getCart = () => {
+		axios.get('/api/cart')
+			.then(({data}) => data)
+			.then((retrievedCart) => setCart(retrievedCart));
 	}
+
+  const onProductChange = (product) => {
+    axios.put(`/api/products/${product.id}`, product)
+      .then(res => res.data)
+      .then((changedProduct) => {
+				setProducts(
+					products.map((product) => {
+						if (product.id === changedProduct.id) {
+							return changedProduct;
+						} else {
+							return product;
+						}
+					})
+				);
+			});
+  }
 
 	useEffect(() => {
 		axios.get('/api/products')
 			.then(({data}) => data)
 			.then((products) => setProducts(products));
 	}, [])
+
+	useEffect(() => {
+		getCart();
+	}, [products])
 
 	const removeItemFromCart = (id) => {
 		setCart(
@@ -45,11 +80,14 @@ const App = () => {
 	}
 	// TODO: when item is deleted remove item from cart too
   const removeProduct = (id) => {
-		setProducts(
-			products.filter(product => {
-				return product.id !== id;
-			})
-    );
+		axios.delete(`/api/products/${id}`)
+		 .then(res => {
+				setProducts(
+					products.filter(product => {
+						return product.id !== id;
+					})
+				);
+			});
   }
 
 	const product = {title: "", price: "", quantity: ""}
@@ -77,6 +115,7 @@ const App = () => {
 					addItem={addItemToCart}
 					removeItem={removeItemFromCart}
           removeProduct={removeProduct}
+					onProductChange={onProductChange}
 				/>
 				<AddForm formProperties={props}/>
 			</main>

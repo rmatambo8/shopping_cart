@@ -1,6 +1,7 @@
 import React from 'react';
 const Form = ({ editing, toggleForm, title, price, quantity, handleSubmit}) => {
   const handleProductChange = event => {
+    event.preventDefault();
     if (toggleForm) toggleForm(event);
     const object = { title: title.value, price: price.value, quantity: quantity.value };
     handleSubmit(object);
