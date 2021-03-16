@@ -41,12 +41,13 @@ const Header = ({cart}) => {
         {cart.length === 0 ?
           <React.Fragment>
             <p>Your cart is empty</p>
+            <p>Total: $0</p>
             <a href="#" className="button checkout disabled">Checkout</a>
           </React.Fragment>
           :
           <React.Fragment>
             <CartItems cart={cart} />
-            <a href="#" className="button checkout disabled">Checkout</a>
+            <a href="#" className="button checkout">Checkout</a>
           </React.Fragment>
         }
       </div>

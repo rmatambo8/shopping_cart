@@ -18,14 +18,14 @@ const App = () => {
 		item = {...item};
 		let index = cart.findIndex(({id}) => id === item.id);
 		let newCart = cart.slice();
-		console.log(index);
+
 		if (index > -1) {
 			newCart[index].quantity++;
 		} else {
 			item.quantity = 1;
 			newCart.push(item);
 		}
-		console.log(newCart);
+
 		setCart(newCart);
 	}
 
@@ -40,7 +40,7 @@ const App = () => {
 			})
 	  );
 	}
-
+	// TODO: when item is deleted remove item from cart too
   const removeProduct = (id) => {
 		setProducts(
 			products.filter(product => {
