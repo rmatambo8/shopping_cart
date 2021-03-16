@@ -1,12 +1,12 @@
 import React from 'react';
 import Product from './Product';
 
-const Products = ({ productList, addItem, removeItem }) => {
+const Products = ({ productList, addItem, removeItem, removeProduct }) => {
   return (
     <div className="product-listing">
       <h2>Products</h2>
       {productList.map(product => {
-        return <Product key={product.id} product={product} addItem={addItem} removeItem={removeItem} />
+        return <Product key={product.id} product={product} addItem={addItem} removeItem={removeItem} removeProduct={removeProduct} />
       })}
     </div>
   )

@@ -14,8 +14,9 @@ const App = () => {
 	}
 
 	useEffect(() => {
-		setProducts(data)
+		setProducts(data);
 	}, [])
+
 	const removeItemFromCart = (id) => {
 		setCart(
 			cart.filter(item => {
@@ -23,6 +24,14 @@ const App = () => {
 			})
 	  );
 	}
+
+  const removeProduct = (id) => {
+		setProducts(
+			products.filter(product => {
+				return product.id !== id;
+			})
+    );
+  }
 
 	const product = {title: "", price: "", quantity: ""}
 
@@ -43,6 +52,7 @@ const App = () => {
 					productList={products} 
 					addItem={addItemToCart} 
 					removeItem={removeItemFromCart} 
+          removeProduct={removeProduct}
 				/>
 				<AddForm formProperties={props}/>
 			</main>
