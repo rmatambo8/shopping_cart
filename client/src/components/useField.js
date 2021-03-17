@@ -7,9 +7,12 @@ const useField = (text) => {
     event.preventDefault();
     setValue(event.target.value);
   }
+  const reset = () => {
+    setValue('');
+  }
 
   const type = "text";
-  return { value, type, onChange };
+  return [{ value, type, onChange }, reset];
 } 
 
 export default useField;

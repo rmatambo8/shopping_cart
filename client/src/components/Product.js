@@ -6,19 +6,14 @@ import useField from './useField';
 
 const Product = ({ product, addItem, removeItem, removeProduct, onProductChange }) => {
   const [editing, setEditing] = useState(false);
-  // const [item, setItem] = useState(product);
-
-  const titleEdit = useField(product.title);
-  const priceEdit = useField(product.price);
-  const quantityEdit = useField(product.quantity);
 
   const changeEditMode = (event) => {
     event.preventDefault();
     setEditing(!editing);
   }
 
-  const handleSubmit = (currentItem) => {
-    onProductChange({...currentItem, id: product.id })
+  const handleSubmit = (currentItem, callback) => {
+    onProductChange({ ...currentItem, id: product.id }, callback);
   }
 
   const renderForm = () => {
@@ -26,9 +21,7 @@ const Product = ({ product, addItem, removeItem, removeProduct, onProductChange 
       <div className="edit-form">
         <Form
           editing={editing}
-          title={titleEdit}
-          price={priceEdit}
-          quantity={quantityEdit}
+          product={product}
           toggleForm={changeEditMode}
           handleSubmit={handleSubmit}
         />

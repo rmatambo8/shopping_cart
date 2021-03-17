@@ -1,10 +1,22 @@
 import React from 'react';
-const Form = ({ editing, toggleForm, title, price, quantity, handleSubmit}) => {
+import useField from './useField';
+const Form = ({ editing, toggleForm, product, handleSubmit }) => {
+  if (product === undefined) product = {title: "", price: "", quantity: ""}
+  const [title, titleReset] = useField(product.title);
+  const [price, priceReset] = useField(product.price);
+	const [quantity, quantityReset] = useField(product.quantity);
+
   const handleProductChange = event => {
     event.preventDefault();
-    if (toggleForm) toggleForm(event);
+    toggleForm(event);
     const object = { title: title.value, price: price.value, quantity: quantity.value };
-    handleSubmit(object);
+    handleSubmit(object, () => {
+      titleReset();
+      priceReset();
+      quantityReset();
+    });
+ 
+
   }
 
   return (

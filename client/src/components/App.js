@@ -66,7 +66,7 @@ const App = () => {
 
 	}
 
-  const onProductChange = (product) => {
+  const onProductChange = (product, callback) => {
     axios.put(`/api/products/${product.id}`, product)
       .then(res => res.data)
       .then((changedProduct) => {
@@ -79,6 +79,7 @@ const App = () => {
 						}
 					})
 				);
+				callback();
 			});
   }
 
@@ -123,22 +124,18 @@ const App = () => {
 			});
 	}
 
-	const product = {title: "", price: "", quantity: ""}
-	const title = useField(product.title);
-  const price = useField(product.price);
-	const quantity = useField(product.quantity);
 
-	const addNewProduct = (_event) => {
-		const item = { title: title.value, price: price.value, quantity: quantity.value }
+	const addNewProduct = (item, callback) => {
 		axios.post("/api/products", item)
 			.then(({data}) => {
 				return data
 			}).then((product) => {
 				setProducts(products.concat(product));
+				callback();
 			});
 	}
 
-	const props = { title, price, quantity, handleSubmit: addNewProduct }
+	const props = { handleSubmit: addNewProduct }
 	return (
 		<div id="app">
 			<Header onCheckout={handleCheckout} cart={cart}/>
