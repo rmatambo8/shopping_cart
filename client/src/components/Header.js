@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Header = ({cart}) => {
+const Header = ({cart, onCheckout }) => {
   const CartItem = ({item}) => {
     return (
       <tr>
@@ -47,7 +47,7 @@ const Header = ({cart}) => {
           :
           <React.Fragment>
             <CartItems cart={cart} />
-            <a href="#" className="button checkout">Checkout</a>
+            <a href="#" onClick={onCheckout} className="button checkout">Checkout</a>
           </React.Fragment>
         }
       </div>

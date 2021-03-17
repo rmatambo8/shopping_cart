@@ -12,11 +12,28 @@ const App = () => {
 	const [products, setProducts] = useState([]);
 
 	const addItemToCart = (item) => {
-		axios.post('/api/cart', {productId: item.id, product: {...item}})
-		.then(res => {
-			axios.get('/api/cart')
+		if (item.quantity === 0) {
+			alert("This item is out of stock!!")
+			return;
+		}
+		// 1. post to cart new item - > new Item
+		// 3. Update cart to have new item. -> getCart
+		// 2. Update products to have one less
+
+
+		axios.post('/api/cart', { productId: item.id, product: { ...item } })
 			.then(({data}) => data)
-			.then(cart => setCart(cart));
+			.then(updatedItem => {
+				setProducts(products.map(product => {
+					if (product.id === updatedItem.productId) {
+						 product = { ...product };
+						 product.quantity--;
+					}
+					
+					return product;
+				}));
+			}).then(_res => {
+				getCart();
 		});
 	};
 	// const addItemHelper = (item) => {
@@ -45,16 +62,20 @@ const App = () => {
 			.then((retrievedCart) => setCart(retrievedCart));
 	}
 
+	const getProduct = () => {
+
+	}
+
   const onProductChange = (product) => {
     axios.put(`/api/products/${product.id}`, product)
       .then(res => res.data)
       .then((changedProduct) => {
 				setProducts(
-					products.map((product) => {
-						if (product.id === changedProduct.id) {
+					products.map((prod) => {
+						if (prod.id === changedProduct.id) {
 							return changedProduct;
 						} else {
-							return product;
+							return prod;
 						}
 					})
 				);
@@ -71,6 +92,10 @@ const App = () => {
 		getCart();
 	}, [products])
 
+	useEffect(() => {
+
+	}, [products])
+
 	const removeItemFromCart = (id) => {
 		setCart(
 			cart.filter(item => {
@@ -78,7 +103,7 @@ const App = () => {
 			})
 	  );
 	}
-	// TODO: when item is deleted remove item from cart too
+
   const removeProduct = (id) => {
 		axios.delete(`/api/products/${id}`)
 		 .then(res => {
@@ -90,11 +115,19 @@ const App = () => {
 			});
   }
 
-	const product = {title: "", price: "", quantity: ""}
+	const handleCheckout = (e) => {
+		e.preventDefault();
+		axios.get('/api/checkout')
+			.then(res => {
+				setCart([]);
+			});
+	}
 
+	const product = {title: "", price: "", quantity: ""}
 	const title = useField(product.title);
   const price = useField(product.price);
 	const quantity = useField(product.quantity);
+
 	const addNewProduct = (_event) => {
 		const item = { title: title.value, price: price.value, quantity: quantity.value }
 		axios.post("/api/products", item)
@@ -108,7 +141,7 @@ const App = () => {
 	const props = { title, price, quantity, handleSubmit: addNewProduct }
 	return (
 		<div id="app">
-			<Header cart={cart}/>
+			<Header onCheckout={handleCheckout} cart={cart}/>
 			<main>
 				<Products
 					productList={products}
@@ -118,7 +151,7 @@ const App = () => {
 					onProductChange={onProductChange}
 				/>
 				<AddForm formProperties={props}/>
-			</main>
+			</main> 
 		</div>
 	);
 };
