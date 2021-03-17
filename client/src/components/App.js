@@ -16,33 +16,24 @@ const App = () => {
 			alert("This item is out of stock!!")
 			return;
 		}
-		axios.post('/api/cart', {productId: item.id, product: {...item}})
-		.then(res => {
-			axios.get('/api/cart')
+		// 1. post to cart new item - > new Item
+		// 3. Update cart to have new item. -> getCart
+		// 2. Update products to have one less
+
+
+		axios.post('/api/cart', { productId: item.id, product: { ...item } })
 			.then(({data}) => data)
-			.then(product => {
-				item = {...item};
-				item.quantity--;
-
+			.then(updatedItem => {
 				setProducts(products.map(product => {
-					 if (product.id === item.id) {
-						 return item
-					 } else {
-						 return product
-					 }
+					if (product.id === updatedItem.productId) {
+						 product = { ...product };
+						 product.quantity--;
+					}
+					
+					return product;
 				}));
-
-				let index = cart.findIndex(({id}) => id === item.id);
-				let newCart = cart.slice();
-
-				if (index > -1) {
-					newCart[index].quantity++;
-				} else {
-					item.quantity = 1;
-					newCart.push(item);
-				}
-				setCart(newCart);
-			});
+			}).then(_res => {
+				getCart();
 		});
 	};
 	// const addItemHelper = (item) => {
