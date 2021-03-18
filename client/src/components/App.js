@@ -2,40 +2,24 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Header from './Header';
 import Products from './Products';
-import useField from './useField';
-import data from "../lib/data";
+import { addProduct, deleteProduct, getProducts, updateProduct } from '../actions/products';
 import AddForm from './AddForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, checkout, getCart } from "../actions/cart";
 // import Form from './Form'
 
 const App = () => {
-	const [ cart, setCart ] = useState([]);
-	const [products, setProducts] = useState([]);
+	const dispatch = useDispatch();
+	// let cart = useSelector(state => state.cart)
+	// let products = useSelector(state => state.products)
 
-	const addItemToCart = (item) => {
-		if (item.quantity === 0) {
-			alert("This item is out of stock!!")
-			return;
-		}
-		// 1. post to cart new item - > new Item
-		// 3. Update cart to have new item. -> getCart
-		// 2. Update products to have one less
-
-
-		axios.post('/api/cart', { productId: item.id, product: { ...item } })
-			.then(({data}) => data)
-			.then(updatedItem => {
-				setProducts(products.map(product => {
-					if (product.id === updatedItem.productId) {
-						 product = { ...product };
-						 product.quantity--;
-					}
-					
-					return product;
-				}));
-			}).then(_res => {
-				getCart();
-		});
-	};
+	// const addItemToCart = async (item) => {
+	// 	if (item.quantity === 0) {
+	// 		alert("This item is out of stock!!")
+	// 		return;
+	// 	}
+	// 	dispatch(addToCart({ productId: item.id, product: { ...item } }));
+	// };
 	// const addItemHelper = (item) => {
 	// 	if (item.quantity === 0) {
 	// 		alert("This item is out of stock!!")
@@ -56,98 +40,97 @@ const App = () => {
 	// 	setCart(newCart);
 	// }
 
-	const getCart = () => {
-		axios.get('/api/cart')
-			.then(({data}) => data)
-			.then((retrievedCart) => setCart(retrievedCart));
-	}
+	// const getCart = () => {
+	// 	axios.get('/api/cart')
+	// 		.then(({data}) => data)
+	// 		.then((retrievedCart) => setCart(retrievedCart));
+	// }
 
-	const getProduct = () => {
 
-	}
+	// const onProductChange = async (product, callback) => {
+	// 	const result = await dispatch(updateProduct(product))
+	// 	callback(result)
+  //   // axios.put(`/api/products/${product.id}`, product)
+  //   //   .then(res => res.data)
+  //   //   .then((changedProduct) => {
+	// 	// 		setProducts(
+	// 	// 			products.map((prod) => {
+	// 	// 				if (prod.id === changedProduct.id) {
+	// 	// 					return changedProduct;
+	// 	// 				} else {
+	// 	// 					return prod;
+	// 	// 				}
+	// 	// 			})
+	// 	// 		);
+	// 	// 		callback();
+	// 	// 	});
+  // }
 
-  const onProductChange = (product, callback) => {
-    axios.put(`/api/products/${product.id}`, product)
-      .then(res => res.data)
-      .then((changedProduct) => {
-				setProducts(
-					products.map((prod) => {
-						if (prod.id === changedProduct.id) {
-							return changedProduct;
-						} else {
-							return prod;
-						}
-					})
-				);
-				callback();
-			});
-  }
+	// useEffect(() => {
+	// 	// dispatch(getProducts())
+	// 	// dispatch(getCart())
+	// 	// axios.get('/api/products')
+	// 	// 	.then(({data}) => data)
+	// 	// 	.then((products) => setProducts(products));
+	// }, [dispatch])
 
-	useEffect(() => {
-		axios.get('/api/products')
-			.then(({data}) => data)
-			.then((products) => setProducts(products));
-	}, [])
+	// useEffect(() => {
+	// 	getCart();
+	// }, [products])
 
-	useEffect(() => {
-		getCart();
-	}, [products])
+	// useEffect(() => {
 
-	useEffect(() => {
-
-	}, [products])
+	// }, [products])
 
 	const removeItemFromCart = (id) => {
-		setCart(
-			cart.filter(item => {
-				return item.id !== id;
-			})
-	  );
+		// setCart(
+		// 	cart.filter(item => {
+		// 		return item.id !== id;
+		// 	})
+	  // );
 	}
 
-  const removeProduct = (id) => {
-		axios.delete(`/api/products/${id}`)
-		 .then(res => {
-				setProducts(
-					products.filter(product => {
-						return product.id !== id;
-					})
-				);
-			});
-  }
+	// const removeProduct = async (id) => {
+	// 	dispatch(deleteProduct(id))
+	// 	// axios.delete(`/api/products/${id}`)
+	// 	//  .then(res => {
+	// 	// 		setProducts(
+	// 	// 			products.filter(product => {
+	// 	// 				return product.id !== id;
+	// 	// 			})
+	// 	// 		);
+	// 	// 	});
+  // }
 
-	const handleCheckout = (e) => {
+	const handleCheckout = async (e) => {
 		e.preventDefault();
-		axios.get('/api/checkout')
-			.then(res => {
-				setCart([]);
-			});
+		dispatch(checkout())
+		// axios.get('/api/checkout')
+		// 	.then(res => {
+		// 		setCart([]);
+		// 	});
 	}
 
 
-	const addNewProduct = (item, callback) => {
-		axios.post("/api/products", item)
-			.then(({data}) => {
-				return data
-			}).then((product) => {
-				setProducts(products.concat(product));
-				callback();
-			});
-	}
+	// const addNewProduct = async (item, callback) => {
+	// 	const result = await dispatch(addProduct(item));
+	// 	callback(result);
+	// 	// axios.post("/api/products", item)
+	// 	// 	.then(({data}) => {
+	// 	// 		return data
+	// 	// 	}).then((product) => {
+	// 	// 		setProducts(products.concat(product));
+	// 	// 		callback();
+	// 	// 	});
+	// }
 
-	const props = { handleSubmit: addNewProduct }
+	// const props = { handleSubmit: addNewProduct }
 	return (
 		<div id="app">
-			<Header onCheckout={handleCheckout} cart={cart}/>
+			<Header/>
 			<main>
-				<Products
-					productList={products}
-					addItem={addItemToCart}
-					removeItem={removeItemFromCart}
-          removeProduct={removeProduct}
-					onProductChange={onProductChange}
-				/>
-				<AddForm formProperties={props}/>
+				<Products/>
+				<AddForm/>
 			</main> 
 		</div>
 	);

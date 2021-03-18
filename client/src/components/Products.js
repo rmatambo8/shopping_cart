@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProduct, deleteProduct, getProducts, updateProduct } from '../actions/products';
 import Product from './Product';
 
-const Products = ({ productList, addItem, removeItem, removeProduct, onProductChange }) => {
+const Products = () => {
+  const dispatch = useDispatch();
+  let products = useSelector(state => state.products)
+  useEffect(() => {
+    dispatch(getProducts())
+  }, [dispatch])
+
+
   return (
     <div className="product-listing">
       <h2>Products</h2>
-      {productList.map(product => {
+      {products.map(product => {
         return <Product key={product.id}
           product={product}
-          addItem={addItem}
-          removeItem={removeItem}
-          removeProduct={removeProduct}
-          onProductChange={onProductChange}
         />
       })}
     </div>

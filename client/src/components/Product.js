@@ -1,19 +1,22 @@
 import React, {useState} from 'react';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../actions/cart';
+import { deleteProduct } from '../api';
 import Form from './Form';
-import axios from 'axios';
 
-import useField from './useField';
-
-const Product = ({ product, addItem, removeItem, removeProduct, onProductChange }) => {
+const Product = ({ product}) => {
   const [editing, setEditing] = useState(false);
+  const dispatch = useDispatch();
+  const removeProduct = async (id) => {
+		dispatch(deleteProduct(id))
+  }
 
+  const addItem = async product => {
+    dispatch(addToCart(product))
+  }
   const changeEditMode = (event) => {
     event.preventDefault();
     setEditing(!editing);
-  }
-
-  const handleSubmit = (currentItem, callback) => {
-    onProductChange({ ...currentItem, id: product.id }, callback);
   }
 
   const renderForm = () => {
@@ -23,7 +26,6 @@ const Product = ({ product, addItem, removeItem, removeProduct, onProductChange 
           editing={editing}
           product={product}
           toggleForm={changeEditMode}
-          handleSubmit={handleSubmit}
         />
       </div>
     )

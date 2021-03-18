@@ -1,23 +1,32 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { addProduct, updateProduct } from '../actions/products';
 import useField from './useField';
 const Form = ({ editing, toggleForm, product, handleSubmit }) => {
+  const dispatch = useDispatch()
   if (product === undefined) product = {title: "", price: "", quantity: ""}
   const [title, titleReset] = useField(product.title);
   const [price, priceReset] = useField(product.price);
 	const [quantity, quantityReset] = useField(product.quantity);
 
-  const handleProductChange = event => {
+  const handleProductChange = async event => {
     event.preventDefault();
     toggleForm(event);
     const object = { title: title.value, price: price.value, quantity: quantity.value };
-    handleSubmit(object, () => {
+    let response;
+    if (editing) {
+      object.id = product.id
+      response = await dispatch(updateProduct(object))
+    } else {
+      response = dispatch(addProduct(object))
+    }
+    if (response) {
       titleReset();
       priceReset();
       quantityReset();
-    });
+    };
  
-
-  }
+  };
 
   return (
     <form className="visible">

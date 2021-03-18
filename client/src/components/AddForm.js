@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Form from './Form';
-const AddForm = ({ formProperties }) => {
+const AddForm = () => {
   const [displayAddForm, setDisplayAddForm] = useState(false);
   const toggleForm = (e) => {
     e.preventDefault();
@@ -17,7 +17,7 @@ const AddForm = ({ formProperties }) => {
           <h3>Add Product</h3>
           </React.Fragment>
         :
-        <Form editing={false} toggleForm={toggleForm} {...formProperties} />
+        <Form editing={false} toggleForm={toggleForm} />
         }
 			</div>
   );

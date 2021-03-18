@@ -1,6 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { checkout, getCart } from '../actions/cart';
 
-const Header = ({cart, onCheckout }) => {
+const Header = () => {
+  const dispatch = useDispatch()
+  const cart = useSelector(state => state.cart)
+  const onCheckout = async (e) => {
+		e.preventDefault();
+		dispatch(checkout())
+	}
+
+  useEffect(() => {
+    dispatch(getCart())
+  }, [dispatch])
   const CartItem = ({item}) => {
     return (
       <tr>
