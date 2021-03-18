@@ -6,7 +6,7 @@ export default (state = [], action) => {
     case "ADD_ITEM_TO_CART":
       return state.map(product => {
         if (product.id === data.productId) { // this is triggered from the cart
-          product = [...product]
+          product = { ...product }
           product.quantity--
         }
         return product
