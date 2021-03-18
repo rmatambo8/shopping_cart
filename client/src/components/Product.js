@@ -5,7 +5,7 @@ import axios from 'axios';
 import useField from './useField';
 import { useDispatch } from 'react-redux';
 import { deleteProduct, updateProduct } from '../actions/productActions';
-import { addItem} from '../actions/cartActions';
+import { newItem } from '../actions/cartActions';
 
 const Product = ({ product }) => {
   const [editing, setEditing] = useState(false);
@@ -22,16 +22,16 @@ const Product = ({ product }) => {
 			});
   }
 
-  const addItem = (item) => {
-		if (item.quantity === 0) {
+  const addItem = (addedProduct) => {
+		if (addedProduct.quantity === 0) {
 			alert("This item is out of stock!!")
 			return;
 		}
 
-		axios.post('/api/cart', { productId: item.id, product: { ...item } })
+		axios.post('/api/cart', { productId: product.id, product: { ...addedProduct } })
 			.then(({data}) => data)
 			.then(updatedItem => {
-        dispatch(addItem(updatedItem))
+        dispatch(newItem(updatedItem))
 		  });
   }
   const handleSubmit = (product, callback) => {

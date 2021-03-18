@@ -12,14 +12,16 @@ const Products = () => {
   useEffect(() => {
     axios.get('/api/products')
       .then(({data}) => data)
-      .then((products) => dispatch(initProducts(products)));
+      .then((products) => {
+        dispatch(initProducts(products))
+      });
   }, []);
 
 
   return (
     <div className="product-listing">
       <h2>Products</h2>
-      {products.map(product => {
+      {products && products.map(product => {
         return <Product key={product.id}
           product={product}
         />

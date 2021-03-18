@@ -5,18 +5,18 @@ export const initProducts = (products) => {
 }
 
 export const addProduct = (product) => {
-  return {type: types.ADD_PRODUCT, payload: {product}}
+  return {type: types.ADD_PRODUCT, payload: {product}};
 }
 
 export const updateProduct = (product) => {
-  return {type: types.UPDATE_PRODUCT, payload: {product}}
+  return {type: types.UPDATE_PRODUCT, payload: {product}};
 }
 
 export const deleteProduct = (id) => {
-  return {type: types.DELETE_PRODUCT, payload: {id}}
+  return {type: types.DELETE_PRODUCT, payload: {id}};
 }
 
 export const addItem = ({productId}) => {
-  return {type: types.ADD_ITEM, payload: {productId}}
+  return {type: types.ADD_ITEM, payload: {productId}};
 }
 

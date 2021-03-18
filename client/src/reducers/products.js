@@ -9,19 +9,19 @@ const productReducer = (state = [], action) => {
     case types.UPDATE_PRODUCT:
       return action.products.map(product => {
         if (product.id === action.payload.product.id) {
-          return action.payload.product
+          return action.payload.product;
         } else {
           return product;
         }
       });
     case types.DELETE_PRODUCT:
       return action.products.filter(product => {
-        return product.id !== action.payload.id
+        return product.id !== action.payload.id;
       });
     case types.ADD_ITEM:
       return state.map(product => {
         if (product.id === action.payload.productId) {
-          return {...product, quantity: product.quantity - 1}
+          return {...product, quantity: product.quantity - 1};
         } else {
           return product;
         }

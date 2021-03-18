@@ -7,12 +7,14 @@ const cartReducer = (state = [], action) => {
     case types.ADD_ITEM:
       let any = false;
       let result = state.map(cartItem => {
-        if (cartItem.ProductId === action.payload.product.id) {
+        if (cartItem.ProductId === action.payload.product.productId) {
           any = true
           cartItem = {...cartItem, quantity: cartItem.quantity + 1}
         }
-      })
-      return any ? result : result.concat(action.payload.product)
+        return cartItem;
+      });
+
+      return any ? result : result.concat(action.payload.product);
     case types.CHECKOUT:
       return [];
     default:

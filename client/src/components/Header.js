@@ -1,6 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
-const Header = ({cart, onCheckout }) => {
+import { initCart, checkout } from "../actions/cartActions";
+
+const Header = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    axios.get('/api/cart')
+      .then(({data}) => data)
+      .then((retrievedCart) => dispatch(initCart(retrievedCart)));
+  })
+
+  const cart = useSelector(({cart}) => cart);
+
+  const onCheckout = () => {
+    axios.get("/api/checkout")
+      .then(() => {
+        dispatch(checkout()); 
+      })
+  }
+
   const CartItem = ({item}) => {
     return (
       <tr>

@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-
+import React from "react";
 
 import Header from './Header';
 import Products from './Products';
@@ -8,30 +6,30 @@ import AddForm from './AddForm';
 // import Form from './Form'
 
 const App = () => {
-	const [ cart, setCart ] = useState([]);
-	const [products, setProducts] = useState([]);
+	// const [ cart, setCart ] = useState([]);
+	// const [products, setProducts] = useState([]);
 
-	const addItemToCart = (item) => {
-		if (item.quantity === 0) {
-			alert("This item is out of stock!!")
-			return;
-		}
+	// const addItemToCart = (item) => {
+	// 	if (item.quantity === 0) {
+	// 		alert("This item is out of stock!!")
+	// 		return;
+	// 	}
 
-		axios.post('/api/cart', { productId: item.id, product: { ...item } })
-			.then(({data}) => data)
-			.then(updatedItem => {
-				setProducts(products.map(product => {
-					if (product.id === updatedItem.productId) {
-						 product = { ...product };
-						 product.quantity--;
-					}
+	// 	axios.post('/api/cart', { productId: item.id, product: { ...item } })
+	// 		.then(({data}) => data)
+	// 		.then(updatedItem => {
+	// 			setProducts(products.map(product => {
+	// 				if (product.id === updatedItem.productId) {
+	// 					 product = { ...product };
+	// 					 product.quantity--;
+	// 				}
 					
-					return product;
-				}));
-			}).then(_res => {
-				getCart();
-		});
-	};
+	// 				return product;
+	// 			}));
+	// 		}).then(_res => {
+	// 			getCart();
+	// 	});
+	// };
 	// const addItemHelper = (item) => {
 	// 	if (item.quantity === 0) {
 	// 		alert("This item is out of stock!!")
@@ -52,77 +50,75 @@ const App = () => {
 	// 	setCart(newCart);
 	// }
 
-	const getCart = () => {
-		axios.get('/api/cart')
-			.then(({data}) => data)
-			.then((retrievedCart) => setCart(retrievedCart));
-	}
+	// const getCart = () => {
+	// 	axios.get('/api/cart')
+	// 		.then(({data}) => data)
+	// 		.then((retrievedCart) => setCart(retrievedCart));
+	// }
 
-  const onProductChange = (product, callback) => {
-    axios.put(`/api/products/${product.id}`, product)
-      .then(res => res.data)
-      .then((changedProduct) => {
-				setProducts(
-					products.map((prod) => {
-						if (prod.id === changedProduct.id) {
-							return changedProduct;
-						} else {
-							return prod;
-						}
-					})
-				);
-				callback();
-			});
-  }
+  // const onProductChange = (product, callback) => {
+  //   axios.put(`/api/products/${product.id}`, product)
+  //     .then(res => res.data)
+  //     .then((changedProduct) => {
+				// setProducts(
+					// products.map((prod) => {
+						// if (prod.id === changedProduct.id) {
+							// return changedProduct;
+						// } else {
+							// return prod;
+						// }
+					// })
+				// );
+				// callback();
+			// });
+  // }
 
-	useEffect(() => {
-		axios.get('/api/products')
-			.then(({data}) => data)
-			.then((products) => setProducts(products));
-	}, [])
+	// useEffect(() => {
+	// 	axios.get('/api/products')
+	// 		.then(({data}) => data)
+	// 		.then((products) => setProducts(products));
+	// }, [])
 
-	useEffect(() => {
-		getCart();
-	}, [products])
+	// useEffect(() => {
+	// 	getCart();
+	// }, [products])
 
-	useEffect(() => {
+	// useEffect(() => {
 
-	}, [products])
+	// }, [products])
 
-	const removeItemFromCart = (id) => {
-		setCart(
-			cart.filter(item => {
-				return item.id !== id;
-			})
-	  );
-	}
+	// const removeItemFromCart = (id) => {
+	// 	setCart(
+	// 		cart.filter(item => {
+	// 			return item.id !== id;
+	// 		})
+	//   );
+	// }
 
-  const removeProduct = (id) => {
-		axios.delete(`/api/products/${id}`)
-		 .then(res => {
-				setProducts(
-					products.filter(product => {
-						return product.id !== id;
-					})
-				);
-			});
-  }
+  // const removeProduct = (id) => {
+		// axios.delete(`/api/products/${id}`)
+		 // .then(res => {
+				// setProducts(
+					// products.filter(product => {
+						// return product.id !== id;
+					// })
+				// );
+			// });
+  // }
 
-	const handleCheckout = (e) => {
-		e.preventDefault();
-		axios.get('/api/checkout')
-			.then(res => {
-				setCart([]);
-			});
-	}
+// 	const handleCheckout = (e) => {
+// 		e.preventDefault();
+// 		axios.get('/api/checkout')
+// 			.then(res => {
+// 				setCart([]);
+// 			});
+// 	}
 
 	return (
 		<div id="app">
-			<Header onCheckout={handleCheckout} cart={cart}/>
+			<Header />
 			<main>
-				<Products
-					productList={products}
-				/>
+				<Products />
 				<AddForm />
 			</main> 
 		</div>
