@@ -2,31 +2,27 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Header from './Header';
 import Products from './Products';
-import useField from './useField';
-import data from "../lib/data";
 import AddForm from './AddForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { productsReceived } from '../actions/productActions';
-
+import * as productActions from '../actions/productActions';
+import * as cartActions from '../actions/cartActions';
 
 const App = () => {
-	const [ cart, setCart ] = useState([]);
+	const setCart = () => {};
 
 	const dispatch = useDispatch();
-	const products = useSelector((state) => {
-		console.log(state);
-		return state.products
-	})
+	const products = useSelector(({products}) => products);
+	const cart = useSelector(({cart}) => cart);
 
 	useEffect(() => {
 		axios.get('/api/products')
 			.then(({data}) => data)
-			.then((products) => dispatch(productsReceived(products)));
-	}, [])
+			.then((products) => dispatch(productActions.productsReceived(products)));
+	}, []);
 
 	useEffect(() => {
 		getCart();
-	}, [products])
+	}, [products]);
 
 	const setProducts = () => {}
 
@@ -38,28 +34,19 @@ const App = () => {
 
 		axios.post('/api/cart', { productId: item.id, product: { ...item } })
 			.then(({data}) => data)
-			.then(updatedItem => {
-				setProducts(products.map(product => {
-					if (product.id === updatedItem.productId) {
-						 product = { ...product };
-						 product.quantity--;
-					}
-					
-					return product;
-				}));
-			}).then(_res => {
-				getCart();
+			.then(item => {
+				dispatch(productActions.decrementQuantity(item.productId));
+				return item;
+			}).then(cartItem => {
+				console.log(cartItem);
+				dispatch(cartActions.addToCart(cartItem));
 		});
 	};
 
 	const getCart = () => {
 		axios.get('/api/cart')
 			.then(({data}) => data)
-			.then((retrievedCart) => setCart(retrievedCart));
-	}
-
-	const getProduct = () => {
-
+			.then((cart) => dispatch(cartActions.cartReceived(cart)));
 	}
 
   const onProductChange = (product, callback) => {
@@ -131,7 +118,7 @@ const App = () => {
 					onProductChange={onProductChange}
 				/>
 				<AddForm formProperties={props}/>
-			</main> 
+			</main>
 		</div>
 	);
 };
