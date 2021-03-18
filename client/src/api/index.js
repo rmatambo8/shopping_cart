@@ -14,7 +14,8 @@ export const addProductToCart = async (item) => {
 
 
 export const getProducts = async () => {
-  return axios.get('/api/products');
+  const { data } = await axios.get('/api/products');
+  return data;
 }
 
 export const addProduct = async (item) => {

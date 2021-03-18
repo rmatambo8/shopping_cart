@@ -5,7 +5,7 @@ import * as api from '../api';
 export const getProducts = () => {
   return async dispatch => {
     try {
-      const { data } = await api.getProducts();
+      const data = await api.getProducts();
       const action = { type: "GET_PRODUCTS", data };
       dispatch(action);
     } catch (error) {
