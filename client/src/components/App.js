@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+
+
 import Header from './Header';
 import Products from './Products';
 import useField from './useField';
@@ -16,10 +18,6 @@ const App = () => {
 			alert("This item is out of stock!!")
 			return;
 		}
-		// 1. post to cart new item - > new Item
-		// 3. Update cart to have new item. -> getCart
-		// 2. Update products to have one less
-
 
 		axios.post('/api/cart', { productId: item.id, product: { ...item } })
 			.then(({data}) => data)

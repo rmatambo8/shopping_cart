@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Product from './Product';
+import axios from "axios";
 
-const Products = ({ productList, addItem, removeItem, removeProduct, onProductChange }) => {
+import { initProducts } from "../actions/productActions";
+import { useDispatch, useSelector } from "react-redux";
+
+const Products = ({ addItem, removeItem, removeProduct, onProductChange }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    axios.get('/api/products')
+      .then(({data}) => data)
+      .then((products) => dispatch(initProducts(products)));
+  }, []);
+
+  const productList = useSelector(({ products }) => products);
+
   return (
     <div className="product-listing">
       <h2>Products</h2>
