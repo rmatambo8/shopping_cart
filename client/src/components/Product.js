@@ -3,18 +3,48 @@ import Form from './Form';
 import axios from 'axios';
 
 import useField from './useField';
+import { useDispatch } from 'react-redux';
+import { deleteProduct, updateProduct } from '../actions/productActions';
+import { addItem} from '../actions/cartActions';
 
-const Product = ({ product, addItem, removeItem, removeProduct, onProductChange }) => {
+const Product = ({ product }) => {
   const [editing, setEditing] = useState(false);
-
+  const dispatch = useDispatch()
   const changeEditMode = (event) => {
     event.preventDefault();
     setEditing(!editing);
   }
 
-  const handleSubmit = (currentItem, callback) => {
-    onProductChange({ ...currentItem, id: product.id }, callback);
+  const removeProduct = (id) => {
+		axios.delete(`/api/products/${id}`)
+		 .then(res => {
+				dispatch(deleteProduct(id))
+			});
   }
+
+  const addItem = (item) => {
+		if (item.quantity === 0) {
+			alert("This item is out of stock!!")
+			return;
+		}
+
+		axios.post('/api/cart', { productId: item.id, product: { ...item } })
+			.then(({data}) => data)
+			.then(updatedItem => {
+        dispatch(addItem(updatedItem))
+		  });
+  }
+  const handleSubmit = (product, callback) => {
+    axios.put(`/api/products/${product.id}`, product)
+      .then(res => res.data)
+      .then((changedProduct) => {
+				dispatch(updateProduct(changedProduct))
+				callback();
+			});
+  }
+  // const handleSubmit = (currentItem, callback) => {
+  //   onProductChange({ ...currentItem, id: product.id }, callback);
+  // }
 
   const renderForm = () => {
     return (

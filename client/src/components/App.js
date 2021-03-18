@@ -4,8 +4,6 @@ import axios from "axios";
 
 import Header from './Header';
 import Products from './Products';
-import useField from './useField';
-import data from "../lib/data";
 import AddForm from './AddForm';
 // import Form from './Form'
 
@@ -58,10 +56,6 @@ const App = () => {
 		axios.get('/api/cart')
 			.then(({data}) => data)
 			.then((retrievedCart) => setCart(retrievedCart));
-	}
-
-	const getProduct = () => {
-
 	}
 
   const onProductChange = (product, callback) => {
@@ -122,30 +116,14 @@ const App = () => {
 			});
 	}
 
-
-	const addNewProduct = (item, callback) => {
-		axios.post("/api/products", item)
-			.then(({data}) => {
-				return data
-			}).then((product) => {
-				setProducts(products.concat(product));
-				callback();
-			});
-	}
-
-	const props = { handleSubmit: addNewProduct }
 	return (
 		<div id="app">
 			<Header onCheckout={handleCheckout} cart={cart}/>
 			<main>
 				<Products
 					productList={products}
-					addItem={addItemToCart}
-					removeItem={removeItemFromCart}
-          removeProduct={removeProduct}
-					onProductChange={onProductChange}
 				/>
-				<AddForm formProperties={props}/>
+				<AddForm />
 			</main> 
 		</div>
 	);

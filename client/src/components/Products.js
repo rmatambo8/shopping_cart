@@ -5,8 +5,9 @@ import axios from "axios";
 import { initProducts } from "../actions/productActions";
 import { useDispatch, useSelector } from "react-redux";
 
-const Products = ({ addItem, removeItem, removeProduct, onProductChange }) => {
+const Products = () => {
   const dispatch = useDispatch();
+  const products = useSelector((state) => state.products);
 
   useEffect(() => {
     axios.get('/api/products')
@@ -14,18 +15,13 @@ const Products = ({ addItem, removeItem, removeProduct, onProductChange }) => {
       .then((products) => dispatch(initProducts(products)));
   }, []);
 
-  const productList = useSelector(({ products }) => products);
 
   return (
     <div className="product-listing">
       <h2>Products</h2>
-      {productList.map(product => {
+      {products.map(product => {
         return <Product key={product.id}
           product={product}
-          addItem={addItem}
-          removeItem={removeItem}
-          removeProduct={removeProduct}
-          onProductChange={onProductChange}
         />
       })}
     </div>
