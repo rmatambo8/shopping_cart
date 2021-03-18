@@ -8,7 +8,7 @@ const AddForm = ({ formProperties }) => {
   }
 
   return (
-      <div className={ !displayAddForm ? "add-form" : "add-form visible"}>
+      <div data-testid="addForm" className={ !displayAddForm ? "add-form" : "add-form visible"}>
         {displayAddForm === false ?
           <React.Fragment>
 					  <p>
