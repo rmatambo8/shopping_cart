@@ -1,4 +1,3 @@
-
 export const productsReceived = (products) => {
   return { type: "PRODUCTS_RECEIVED", payload: { products } };
 }
@@ -11,8 +10,8 @@ export const addProduct = (product) => {
   return { type: "ADD_PRODUCT", payload: { product }};
 }
 
-export const updateProduct = () => {
-
+export const updateProduct = (product) => {
+  return { type: "UPDATE_PRODUCT", payload: { product }};
 }
 
 export const deleteProduct = (id) => {

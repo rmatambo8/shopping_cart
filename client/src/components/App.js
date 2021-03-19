@@ -24,22 +24,6 @@ const App = () => {
 
 	const setProducts = () => {}
 
-	const addItemToCart = (item) => {
-		if (item.quantity === 0) {
-			alert("This item is out of stock!!")
-			return;
-		}
-
-		axios.post('/api/cart', { productId: item.id, product: { ...item } })
-			.then(({data}) => data)
-			.then(item => {
-				dispatch(productActions.decrementQuantity(item.productId));
-				return item;
-			}).then(cartItem => {
-				console.log(cartItem);
-				dispatch(cartActions.addToCart(cartItem));
-		});
-	};
 
 	const getCart = () => {
 		axios.get('/api/cart')
@@ -47,71 +31,38 @@ const App = () => {
 			.then((cart) => dispatch(cartActions.cartReceived(cart)));
 	}
 
-  const onProductChange = (product, callback) => {
-    axios.put(`/api/products/${product.id}`, product)
-      .then(res => res.data)
-      .then((changedProduct) => {
-				setProducts(
-					products.map((prod) => {
-						if (prod.id === changedProduct.id) {
-							return changedProduct;
-						} else {
-							return prod;
-						}
-					})
-				);
-				callback();
-			});
-  }
-
-	// const removeItemFromCart = (id) => {
-	// 	setCart(
-	// 		cart.filter(item => {
-	// 			return item.id !== id;
-	// 		})
-	//   );
-	// }
-
-  // const removeProduct = (id) => {
-	// 	axios.delete(`/api/products/${id}`)
-	// 	 .then(res => {
+  // const onProductChange = (product, callback) => {
+  //   axios.put(`/api/products/${product.id}`, product)
+  //     .then(res => res.data)
+  //     .then((changedProduct) => {
 	// 			setProducts(
-	// 				products.filter(product => {
-	// 					return product.id !== id;
+	// 				products.map((prod) => {
+	// 					if (prod.id === changedProduct.id) {
+	// 						return changedProduct;
+	// 					} else {
+	// 						return prod;
+	// 					}
 	// 				})
 	// 			);
+	// 			callback();
 	// 		});
   // }
 
-	const handleCheckout = (e) => {
-		e.preventDefault();
-		axios.get('/api/checkout')
-			.then(res => {
-				// dispatch(checkout());
-			});
-	}
-
-
-	// const addNewProduct = (item, callback) => {
-	// 	axios.post("/api/products", item)
-	// 		.then(({data}) => {
-	// 			return data
-	// 		}).then((product) => {
-	// 			dispatch(productActions.addProduct(product));
-	// 			callback();
+	// const handleCheckout = (e) => {
+	// 	e.preventDefault();
+	// 	axios.get('/api/checkout')
+	// 		.then(res => {
+	// 			// dispatch(checkout());
 	// 		});
 	// }
 
-	// const props = { handleSubmit: addNewProduct }
-
 	return (
 		<div id="app">
-			<Header onCheckout={handleCheckout} cart={cart}/>
+			<Header cart={cart}/>
 			<main>
 				<Products
 					productList={products}
-					addItem={addItemToCart}
-					onProductChange={onProductChange}
+					// onProductChange={onProductChange}
 				/>
 				<AddForm />
 			</main>

@@ -6,12 +6,18 @@ const cart = (state = [], action) => {
       state = state.slice();
       const index = state.findIndex(({id}) => id === action.payload.item.id);
       if (index === -1) {
-        state.push(action.payload.item);
+        return state.concat(action.payload.item);
       } else {
-        state[index].quantity++;
+        return state.map((object, idx) => {
+          if (index === idx) {
+            object = { ...object }
+            object.quantity++
+          }
+          return object;
+        });
       }
-
-      return state;
+    case "CHECKOUT":
+      return [];
     default:
       return state;
   }

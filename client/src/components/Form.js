@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { addProduct } from '../actions/productActions';
+import { addProduct, updateProduct } from '../actions/productActions';
 import useField from './useField';
 import axios from 'axios';
 
@@ -19,8 +19,11 @@ const Form = ({ editing, toggleForm, product, handleSubmit }) => {
     const object = { title: title.value, price: price.value, quantity: quantity.value };
     if (!editing) {
       return addNewProduct(object, resetForm);
+    } else {
+      object.id = product.id
+      editProduct(object, resetForm);
     }
-    handleSubmit(object, resetForm);
+    // handleSubmit(object, resetForm);
   }
 
   const resetForm = () => {
@@ -38,6 +41,28 @@ const Form = ({ editing, toggleForm, product, handleSubmit }) => {
 				callback();
 			});
 	}
+
+  const editProduct = (product, callback) => {
+    console.log(product);
+    axios.put(`/api/products/${product.id}`, product)
+      .then(res => res.data)
+      .then((changedProduct) => {
+        console.log(changedProduct);
+        dispatch(updateProduct(changedProduct))
+        callback();
+      })
+				// setProducts(
+				// 	products.map((prod) => {
+				// 		if (prod.id === changedProduct.id) {
+				// 			return changedProduct;
+				// 		} else {
+				// 			return prod;
+				// 		}
+				// 	})
+				// );
+				// callback();
+			// });
+  }
 
   return (
     <form className="visible">

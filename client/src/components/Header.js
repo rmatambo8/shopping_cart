@@ -1,6 +1,11 @@
 import React from 'react';
+import { checkout } from '../actions/cartActions';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
 
-const Header = ({cart, onCheckout }) => {
+const Header = ({ cart }) => {
+  const dispatch = useDispatch();
+
   const CartItem = ({item}) => {
     return (
       <tr>
@@ -33,6 +38,12 @@ const Header = ({cart, onCheckout }) => {
       </table>
     );
   }
+
+  const handleCheckout = (e) => {
+		e.preventDefault();
+    dispatch(checkout());
+	}
+
   return (
     <header>
       <h1>The Shop!</h1>
@@ -47,7 +58,7 @@ const Header = ({cart, onCheckout }) => {
           :
           <React.Fragment>
             <CartItems cart={cart} />
-            <a href="#" onClick={onCheckout} className="button checkout">Checkout</a>
+            <a href="#" onClick={handleCheckout} className="button checkout">Checkout</a>
           </React.Fragment>
         }
       </div>

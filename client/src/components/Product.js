@@ -5,8 +5,9 @@ import axios from 'axios';
 import useField from './useField';
 import { deleteProduct, updateProduct } from '../actions/productActions';
 import { useDispatch } from 'react-redux';
+import { addToCart } from '../actions/cartActions';
 
-const Product = ({ product, addItem, onProductChange }) => {
+const Product = ({ product, onProductChange }) => {
   const [editing, setEditing] = useState(false);
   const dispatch = useDispatch();
 
@@ -23,6 +24,17 @@ const Product = ({ product, addItem, onProductChange }) => {
 		axios.delete(`/api/products/${id}`)
 		 .then(res => dispatch(deleteProduct(id)));
   }
+
+  const addProductToCart = (item) => {
+		if (item.quantity === 0) {
+			alert("This item is out of stock!!")
+			return;
+		}
+
+		axios.post('/api/cart', { productId: item.id, product: { ...item } })
+			.then(({data}) => data)
+			.then(cartItem => dispatch(addToCart(cartItem)));
+	};
 
   const renderForm = () => {
     return (
@@ -46,7 +58,7 @@ const Product = ({ product, addItem, onProductChange }) => {
         <p className="price">{price}</p>
         <p className="quantity">{quantity} left in stock</p>
         <div className="actions product-actions">
-          {editing || <a className={quantity > 0 ? "button add-to-cart" : "button add-to-cart disabled"} onClick={() => addItem(product)}>Add to Cart</a>}
+          {editing || <a className={quantity > 0 ? "button add-to-cart" : "button add-to-cart disabled"} onClick={() => addProductToCart(product)}>Add to Cart</a>}
           {editing || <a onClick={changeEditMode} className="button edit">Edit</a>}
         </div>
         {editing && renderForm()}
