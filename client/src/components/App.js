@@ -8,8 +8,6 @@ import * as productActions from '../actions/productActions';
 import * as cartActions from '../actions/cartActions';
 
 const App = () => {
-	const setCart = () => {};
-
 	const dispatch = useDispatch();
 	const products = useSelector(({products}) => products);
 	const cart = useSelector(({cart}) => cart);
@@ -66,45 +64,45 @@ const App = () => {
 			});
   }
 
-	const removeItemFromCart = (id) => {
-		setCart(
-			cart.filter(item => {
-				return item.id !== id;
-			})
-	  );
-	}
+	// const removeItemFromCart = (id) => {
+	// 	setCart(
+	// 		cart.filter(item => {
+	// 			return item.id !== id;
+	// 		})
+	//   );
+	// }
 
-  const removeProduct = (id) => {
-		axios.delete(`/api/products/${id}`)
-		 .then(res => {
-				setProducts(
-					products.filter(product => {
-						return product.id !== id;
-					})
-				);
-			});
-  }
+  // const removeProduct = (id) => {
+	// 	axios.delete(`/api/products/${id}`)
+	// 	 .then(res => {
+	// 			setProducts(
+	// 				products.filter(product => {
+	// 					return product.id !== id;
+	// 				})
+	// 			);
+	// 		});
+  // }
 
 	const handleCheckout = (e) => {
 		e.preventDefault();
 		axios.get('/api/checkout')
 			.then(res => {
-				setCart([]);
+				// dispatch(checkout());
 			});
 	}
 
 
-	const addNewProduct = (item, callback) => {
-		axios.post("/api/products", item)
-			.then(({data}) => {
-				return data
-			}).then((product) => {
-				setProducts(products.concat(product));
-				callback();
-			});
-	}
+	// const addNewProduct = (item, callback) => {
+	// 	axios.post("/api/products", item)
+	// 		.then(({data}) => {
+	// 			return data
+	// 		}).then((product) => {
+	// 			dispatch(productActions.addProduct(product));
+	// 			callback();
+	// 		});
+	// }
 
-	const props = { handleSubmit: addNewProduct }
+	// const props = { handleSubmit: addNewProduct }
 
 	return (
 		<div id="app">
@@ -113,11 +111,9 @@ const App = () => {
 				<Products
 					productList={products}
 					addItem={addItemToCart}
-					removeItem={removeItemFromCart}
-					removeProduct={removeProduct}
 					onProductChange={onProductChange}
 				/>
-				<AddForm formProperties={props}/>
+				<AddForm />
 			</main>
 		</div>
 	);

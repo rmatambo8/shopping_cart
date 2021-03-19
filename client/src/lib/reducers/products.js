@@ -8,6 +8,14 @@ const products = (state = [], action) => {
       const item = state.find(({id}) => id == action.payload.itemId);
       item.quantity--;
       return state;
+    case "ADD_PRODUCT":
+      return state.concat(action.payload.product);
+    case "UPDATE_PRODUCT":
+      // return state.map((object) => {
+      //   if (object.id === )
+      // })
+    case "DELETE_PRODUCT":
+      return state.filter((object) => object.id != action.payload.id);
     default:
       return state;
   }

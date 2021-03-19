@@ -3,9 +3,12 @@ import Form from './Form';
 import axios from 'axios';
 
 import useField from './useField';
+import { deleteProduct, updateProduct } from '../actions/productActions';
+import { useDispatch } from 'react-redux';
 
-const Product = ({ product, addItem, removeItem, removeProduct, onProductChange }) => {
+const Product = ({ product, addItem, onProductChange }) => {
   const [editing, setEditing] = useState(false);
+  const dispatch = useDispatch();
 
   const changeEditMode = (event) => {
     event.preventDefault();
@@ -14,6 +17,11 @@ const Product = ({ product, addItem, removeItem, removeProduct, onProductChange 
 
   const handleSubmit = (currentItem, callback) => {
     onProductChange({ ...currentItem, id: product.id }, callback);
+  }
+
+  const removeProduct = (id) => {
+		axios.delete(`/api/products/${id}`)
+		 .then(res => dispatch(deleteProduct(id)));
   }
 
   const renderForm = () => {

@@ -1,7 +1,14 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { addProduct } from '../actions/productActions';
 import useField from './useField';
+import axios from 'axios';
+
 const Form = ({ editing, toggleForm, product, handleSubmit }) => {
+  const dispatch = useDispatch();
+
   if (product === undefined) product = {title: "", price: "", quantity: ""}
+  
   const [title, titleReset] = useField(product.title);
   const [price, priceReset] = useField(product.price);
 	const [quantity, quantityReset] = useField(product.quantity);
@@ -10,14 +17,27 @@ const Form = ({ editing, toggleForm, product, handleSubmit }) => {
     event.preventDefault();
     toggleForm(event);
     const object = { title: title.value, price: price.value, quantity: quantity.value };
-    handleSubmit(object, () => {
-      titleReset();
-      priceReset();
-      quantityReset();
-    });
- 
-
+    if (!editing) {
+      return addNewProduct(object, resetForm);
+    }
+    handleSubmit(object, resetForm);
   }
+
+  const resetForm = () => {
+    titleReset();
+    priceReset();
+    quantityReset();
+  }
+
+  const addNewProduct = (item, callback) => {
+		axios.post("/api/products", item)
+			.then(({data}) => {
+				return data
+			}).then((product) => {
+				dispatch(addProduct(product));
+				callback();
+			});
+	}
 
   return (
     <form className="visible">
