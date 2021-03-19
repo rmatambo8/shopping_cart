@@ -10,11 +10,7 @@ const Products = () => {
   const products = useSelector((state) => state.products);
 
   useEffect(() => {
-    axios.get('/api/products')
-      .then(({data}) => data)
-      .then((products) => {
-        dispatch(initProducts(products))
-      });
+    dispatch(initProducts())
   }, []);
 
 

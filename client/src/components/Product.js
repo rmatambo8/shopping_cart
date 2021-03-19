@@ -16,10 +16,7 @@ const Product = ({ product }) => {
   }
 
   const removeProduct = (id) => {
-		axios.delete(`/api/products/${id}`)
-		 .then(res => {
-				dispatch(deleteProduct(id))
-			});
+    dispatch(deleteProduct(id));
   }
 
   const addItem = (addedProduct) => {

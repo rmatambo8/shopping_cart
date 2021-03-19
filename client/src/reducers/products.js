@@ -15,7 +15,7 @@ const productReducer = (state = [], action) => {
         }
       });
     case types.DELETE_PRODUCT:
-      return action.products.filter(product => {
+      return state.filter(product => {
         return product.id !== action.payload.id;
       });
     case types.ADD_ITEM:

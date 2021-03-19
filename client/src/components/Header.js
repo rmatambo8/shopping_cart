@@ -11,7 +11,7 @@ const Header = () => {
     axios.get('/api/cart')
       .then(({data}) => data)
       .then((retrievedCart) => dispatch(initCart(retrievedCart)));
-  })
+  }, []);
 
   const cart = useSelector(({cart}) => cart);
 
